@@ -34,7 +34,7 @@ class Options():
     dataset: str = "scannet"
     
     # base dataset path.
-    dataset_path: str = "/mnt/scannet-data-png"
+    dataset_path: str = "/home/fyp_shared/simplerecon/SCANNET_ROOT"
 
     # number of dataloader workers to use.
     num_workers: int = 12
@@ -61,7 +61,7 @@ class Options():
 
     # file listing scans to use, since we use tuple files for dataloading, this
     # is only relevant for generating tuple files and certain script guidance.
-    dataset_scan_split_file: str = "/mnt/scannet-data-png2/scannetv2_train.txt"
+    dataset_scan_split_file: str = "/home/fyp_shared/simplerecon/simplerecon/data_splits/ScanNetv2/standard_split/scannetv2_train.txt"
 
     # the split to use, script dependant.
     split: str = "train"
@@ -143,7 +143,7 @@ class Options():
 
     ################################# Inference ################################
     # base paths for all outputs.
-    output_base_path: str = "/mnt/res_nas/mohameds/simple_recon_output/"
+    output_base_path: str = "./simple_recon_output/"
     
     # should we run fusion on predicted depths in test.py?
     run_fusion: bool = False

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONOVISION</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <style>
+    #loading {
+      display: none;
+    }
+    .output-container {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h2>MONOVISION</h2>
+      <form id="apiForm">
+        <div class="form-group">
+          <label for="modelSelect">Select Model:</label>
+          <select class="form-control" id="modelSelect">
+            <option disabled selected value="">Choose the preferred model</option>
+            <option value="bdd100k-rotated">bdd100k-rotated</option>
+            <option value="bdd100k-complete">bdd100k-complete</option>
+            <option value="hostel-experiment">hostel-experiment</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="uriInput">URI:</label>
+          <input type="text" class="form-control" id="uriInput" placeholder="Enter URI">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mt-3"></div> <!-- Add space after the submit button -->
+      </form>
+      <div id="loading" class="mt-3">
+        <p>Loading...</p>
+      </div>
+      <div id="outputContainer" class="output-container mt-3" style="display: none;">
+        <!-- Output will be shown here -->
+      </div>
+      <!-- Move Copy button outside the output container -->
+      <button id="copyBtn" class="btn btn-secondary mt-3" style="display: none;">Copy</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $("#apiForm").submit(function(event){
+      // Prevent default form submission
+      event.preventDefault();
+
+      // Show loading screen
+      $("#loading").show();
+
+      // Get form inputs
+      var model = $("#modelSelect").val();
+      var uri = $("#uriInput").val();
+
+      // AJAX POST request to Flask API
+      $.ajax({
+        type: "POST",
+        url: "/run",
+        contentType: "application/json",
+        data: JSON.stringify({
+          "model": model,
+          "ios_logger_scan_zip_file_gsutil_uri": uri
+        }),
+        success: function(response) {
+          // Hide loading screen
+          $("#loading").hide();
+
+          // Display output in a container
+          $("#outputContainer").html('<p><a href="' + response + '" target="_blank">' + response + '</a></p>');
+          $("#outputContainer").show();
+
+          // Show the Copy button
+          $("#copyBtn").show();
+        },
+        error: function(xhr, status, error) {
+          // Hide loading screen
+          $("#loading").hide();
+
+          // Show error message
+          $("#outputContainer").html('<p>Error: ' + xhr.responseText + '</p>');
+          $("#outputContainer").show();
+        }
+      });
+    });
+
+    // Copy to clipboard functionality
+    $("#copyBtn").click(function(){
+      var outputText = $("#outputContainer a").attr("href");
+      var $temp = $("<input>");
+      $("body").append($temp);
+      $temp.val(outputText).select();
+      document.execCommand("copy");
+      $temp.remove();
+      alert("Output copied to clipboard");
+    });
+  });
+</script>
+
+</body>
+</html>

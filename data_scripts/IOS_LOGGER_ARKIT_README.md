@@ -20,13 +20,14 @@ Run the extraction script that uses modified versions of the functions provided 
 python ./data_scripts/ios_logger_preprocessing.py --data_config configs/data/neucon_arkit_default.yaml 
 ```
 
-Make sure you set your correct `dataset_path` folder.
+Make sure you set your correct `dataset_path` folder. (If not, you need to update this in `simplerecon/configs/data/neucon_arkit_default.yaml`)
 
 Run tuple file generation (we've already computed one for you in data_splits):
 
 ```bash
 python ./data_scripts/generate_test_tuples.py  --num_workers 16 --data_config configs/data/neucon_arkit_default.yaml
 ```
+you also need to add the name of the directory that contains your scans to a new line of ```/home/fyp_shared/simplerecon/simplerecon/data_splits/arkit/scans.txt``` file. 
 
 Then run the model using this config file, see the full readme for more. 
 
