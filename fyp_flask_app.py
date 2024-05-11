@@ -49,26 +49,28 @@ def run_pipeline():
         # the working directory changes to ../../forkgan/ForkGAN-pytorch/ while executing but the next subprocess command consider simplerecon/simplerecon as pwd 
         # it didn't work when i test again. i don't know why it worked before, and now above two lines are lies.
 
-    os.chdir("../../forkgan/ForkGAN-pytorch/")
-    bash_file_path = os.path.join(SIMPLERECON_PATH, "run/2-2-run-move-to-forkgan.sh")
-    subprocess.run(["bash", bash_file_path, filename_without_extension])
+    if not is_day:
+        os.chdir("../../forkgan/ForkGAN-pytorch/")
+        bash_file_path = os.path.join(SIMPLERECON_PATH, "run/2-2-run-move-to-forkgan.sh")
+        subprocess.run(["bash", bash_file_path, filename_without_extension])
 
-    os.chdir("../../forkgan/ForkGAN-pytorch/")    
-    bash_file_path = os.path.join(SIMPLERECON_PATH, "run/3-run-domain-adaptation.sh")
-    subprocess.run(["conda", "run", "-n", FORKGAN_CONDA_ENV, "bash", bash_file_path, model, normalization])
-    
-    bash_file_path = os.path.join(SIMPLERECON_PATH, "run/4-1-run-processing-output.sh")
-    subprocess.run(["bash", bash_file_path, model])
+        os.chdir("../../forkgan/ForkGAN-pytorch/")    
+        bash_file_path = os.path.join(SIMPLERECON_PATH, "run/3-run-domain-adaptation.sh")
+        subprocess.run(["conda", "run", "-n", FORKGAN_CONDA_ENV, "bash", bash_file_path, model, normalization])
+        
+        bash_file_path = os.path.join(SIMPLERECON_PATH, "run/4-1-run-processing-output.sh")
+        subprocess.run(["bash", bash_file_path, model])
 
-    os.chdir("../pre-recon")
-    bash_file_path = os.path.join(SIMPLERECON_PATH, "run/4-2-run-processing-output.sh")
-    subprocess.run(["bash", bash_file_path, filename_without_extension])
+        os.chdir("../pre-recon")
+        bash_file_path = os.path.join(SIMPLERECON_PATH, "run/4-2-run-processing-output.sh")
+        subprocess.run(["bash", bash_file_path, filename_without_extension])
 
-    os.chdir(f"../../simplerecon/arkit_data/scans/{filename_without_extension}")
-    bash_file_path = os.path.join(SIMPLERECON_PATH, "run/4-3-run-processing-output.sh")
-    subprocess.run(["bash", bash_file_path])
+        os.chdir(f"../../simplerecon/arkit_data/scans/{filename_without_extension}")
+        bash_file_path = os.path.join(SIMPLERECON_PATH, "run/4-3-run-processing-output.sh")
+        subprocess.run(["bash", bash_file_path])
 
-    os.chdir("../../../simplerecon")
+        os.chdir("../../../simplerecon")
+        
     subprocess.run(["conda", "run", "-n", SIMPLE_RECON_CONDA_ENV, "bash", "run/5-run-recon.sh", filename_without_extension])
 
     bash_file_path = os.path.join(SIMPLERECON_PATH, "run/6-run-finish.sh")
