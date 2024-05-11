@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MONOVISION</title>
+  <title>Monovision</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Custom CSS -->
@@ -14,7 +14,10 @@
     .output-container {
       border: 1px solid #ccc;
       padding: 10px;
-      margin-top: 20px;
+      margin-top: 40px; /* Increase margin-top for more space */
+    }
+    .checkbox-space {
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -23,20 +26,24 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-6 offset-md-3">
-      <h2>MONOVISION</h2>
+      <h2>Monovision</h2>
       <form id="apiForm">
         <div class="form-group">
           <label for="modelSelect">Select Model:</label>
           <select class="form-control" id="modelSelect">
             <option disabled selected value="">Choose the preferred model</option>
-            <option value="bdd100k-rotated">bdd100k-rotated</option>
-            <option value="bdd100k-complete">bdd100k-complete</option>
             <option value="hostel-experiment">hostel-experiment</option>
+            <option value="bdd100k-complete">bdd100k-complete</option>
+            <option value="bdd100k-rotated">bdd100k-rotated</option>
           </select>
         </div>
         <div class="form-group">
           <label for="uriInput">URI:</label>
           <input type="text" class="form-control" id="uriInput" placeholder="Enter URI">
+        </div>
+        <div class="form-check checkbox-space">
+          <input type="checkbox" class="form-check-input" id="isDayCheckbox">
+          <label class="form-check-label" for="isDayCheckbox">Is Day</label>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
         <div class="mt-3"></div> <!-- Add space after the submit button -->
@@ -61,6 +68,10 @@
     $("#apiForm").submit(function(event){
       // Prevent default form submission
       event.preventDefault();
+      
+      // Hide output container and copy button
+      $("#outputContainer").hide();
+      $("#copyBtn").hide();
 
       // Show loading screen
       $("#loading").show();
@@ -68,6 +79,7 @@
       // Get form inputs
       var model = $("#modelSelect").val();
       var uri = $("#uriInput").val();
+      var isDay = $("#isDayCheckbox").is(":checked");
 
       // AJAX POST request to Flask API
       $.ajax({
@@ -76,7 +88,8 @@
         contentType: "application/json",
         data: JSON.stringify({
           "model": model,
-          "ios_logger_scan_zip_file_gsutil_uri": uri
+          "ios_logger_scan_zip_file_gsutil_uri": uri,
+          "is_day": isDay
         }),
         success: function(response) {
           // Hide loading screen

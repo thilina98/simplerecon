@@ -19,6 +19,7 @@ def run_pipeline():
 
     model = json_request.get("model")
     ios_logger_scan_zip_file_gsutil_uri = json_request.get("ios_logger_scan_zip_file_gsutil_uri")
+    is_day = json_request.get("is_day")
 
     filename = os.path.basename(ios_logger_scan_zip_file_gsutil_uri)
     filename_without_extension = os.path.splitext(filename)[0]
