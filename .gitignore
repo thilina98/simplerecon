@@ -7,3 +7,4 @@ models/*.ckpt
 weights/*.ckpt
 **__pycache__**
 OUTPUT_PATH/
+data_splits/arkit/test_eight_view_deepvmvs.txt
