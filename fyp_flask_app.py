@@ -38,7 +38,6 @@ def run_pipeline():
     os.chdir(".")
 
     os.chdir("../arkit_data/scans")
-    subprocess.run(["pwd"])
     bash_file_path = os.path.join(SIMPLERECON_PATH, "run/1-copy-scan.sh")
     subprocess.run(["bash", bash_file_path, ios_logger_scan_zip_file_gsutil_uri, filename])
 
@@ -70,7 +69,7 @@ def run_pipeline():
         subprocess.run(["bash", bash_file_path])
 
         os.chdir("../../../simplerecon")
-        
+
     subprocess.run(["conda", "run", "-n", SIMPLE_RECON_CONDA_ENV, "bash", "run/5-run-recon.sh", filename_without_extension])
 
     bash_file_path = os.path.join(SIMPLERECON_PATH, "run/6-run-finish.sh")
