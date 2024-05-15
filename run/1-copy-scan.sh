@@ -10,3 +10,5 @@ gsutil cp $1 .
 unzip $2
 rm $2
 
+
+# cd ../../../simplerecon/simplerecon
