@@ -1,5 +1,3 @@
-# $1 = filename_without_extension
-
 #=======================
 # Simplerecon
 #=======================
